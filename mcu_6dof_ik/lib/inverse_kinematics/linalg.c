@@ -101,12 +101,13 @@ void *compute_row(void *args)
     arguments *argument = (arguments *)args;
     int start_row = argument->start_row;
     int end_row = argument->end_row;
+    type_t sum = 0.0;
     for (int i = start_row; i < end_row + 1; i++)
     {
         for (int j = 0; j < g_dim; j++)
         {
             // OF
-            unsigned long sum = 0;
+            sum = 0.0;
             for (int k = 0; k < g_dim; k++)
                 sum += g_mat_a[i][k] * g_trans_mat_b[j][k];
             g_mat_c[i][j] = sum;
