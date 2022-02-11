@@ -9,8 +9,6 @@ type_t g_trans_mat_b[MAX_LEN][MAX_LEN] = {0};
 
 void get_jacobian(type_t jacobian[][6], type_t cur_angle[6])
 {
-    memset(jacobian, 0x0, sizeof(type_t) * 6 * 6);
-
     type_t cos_a0 = cos(cur_angle[0]);
     type_t cos_a1 = cos(cur_angle[1]);
     type_t cos_a2 = cos(cur_angle[2]);
@@ -25,20 +23,42 @@ void get_jacobian(type_t jacobian[][6], type_t cur_angle[6])
     type_t sin_a4 = sin(cur_angle[4]);
     type_t sin_a5 = sin(cur_angle[5]);
 
-    jacobian[0][0] = l6 * (cos_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) - sin_a4 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3)) + l5 * (sin_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) + cos_a3 * sin_a0 * sin_a1) + l2 * cos_a0 + l4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) + l3 * sin_a0 * sin_a1;
-    jacobian[0][1] = -l5 * (cos_a0 * cos_a1 * cos_a3 - cos_a0 * cos_a2 * sin_a1 * sin_a3) - l6 * (sin_a4 * (cos_a0 * cos_a1 * sin_a3 + cos_a0 * cos_a2 * cos_a3 * sin_a1) + cos_a0 * cos_a4 * sin_a1 * sin_a2) - l3 * cos_a0 * cos_a1 - l4 * cos_a0 * sin_a1 * sin_a2;
-    jacobian[0][2] = l5 * sin_a3 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) - l4 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - l6 * (cos_a4 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a3 * sin_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2));
-    jacobian[0][3] = l5 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3) + l6 * sin_a4 * (sin_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - cos_a0 * cos_a3 * sin_a1);
-    jacobian[0][4] = -l6 * (sin_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) + cos_a4 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3));
-    jacobian[1][1] = l4 * cos_a1 * sin_a2 - l3 * sin_a1 - l5 * (cos_a3 * sin_a1 + cos_a1 * cos_a2 * sin_a3) - l6 * (sin_a4 * (sin_a1 * sin_a3 - cos_a1 * cos_a2 * cos_a3) - cos_a1 * cos_a4 * sin_a2);
-    jacobian[1][2] = l6 * (cos_a2 * cos_a4 * sin_a1 - cos_a3 * sin_a1 * sin_a2 * sin_a4) + l4 * cos_a2 * sin_a1 + l5 * sin_a1 * sin_a2 * sin_a3;
-    jacobian[1][3] = l6 * sin_a4 * (cos_a1 * cos_a3 - cos_a2 * sin_a1 * sin_a3) - l5 * (cos_a1 * sin_a3 + cos_a2 * cos_a3 * sin_a1);
-    jacobian[1][4] = l6 * (cos_a4 * (cos_a1 * sin_a3 + cos_a2 * cos_a3 * sin_a1) - sin_a1 * sin_a2 * sin_a4);
-    jacobian[2][0] = l3 * cos_a0 * sin_a1 - l2 * sin_a0 - l4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) - l6 * (cos_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) - sin_a4 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3)) - l5 * (sin_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - cos_a0 * cos_a3 * sin_a1);
-    jacobian[2][1] = l5 * (cos_a1 * cos_a3 * sin_a0 - cos_a2 * sin_a0 * sin_a1 * sin_a3) + l6 * (sin_a4 * (cos_a1 * sin_a0 * sin_a3 + cos_a2 * cos_a3 * sin_a0 * sin_a1) + cos_a4 * sin_a0 * sin_a1 * sin_a2) + l3 * cos_a1 * sin_a0 + l4 * sin_a0 * sin_a1 * sin_a2;
-    jacobian[2][2] = l5 * sin_a3 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) - l4 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - l6 * (cos_a4 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) + cos_a3 * sin_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2));
-    jacobian[2][3] = l5 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3) + l6 * sin_a4 * (sin_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) + cos_a3 * sin_a0 * sin_a1);
-    jacobian[2][4] = -l6 * (sin_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) + cos_a4 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3));
+    jacobian[0][0] = -l5 * (cos_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) - sin_a4 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3)) - l6 * (sin_a5 * (sin_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) + cos_a4 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3)) + cos_a5 * (sin_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) + cos_a3 * sin_a0 * sin_a1)) - l4 * (sin_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) + cos_a3 * sin_a0 * sin_a1) - l1 * cos_a0 - l3 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) - l2 * sin_a0 * sin_a1;
+    jacobian[0][1] = l4 * (cos_a0 * cos_a1 * cos_a3 - cos_a0 * cos_a2 * sin_a1 * sin_a3) + l5 * (sin_a4 * (cos_a0 * cos_a1 * sin_a3 + cos_a0 * cos_a2 * cos_a3 * sin_a1) + cos_a0 * cos_a4 * sin_a1 * sin_a2) + l6 * (cos_a5 * (cos_a0 * cos_a1 * cos_a3 - cos_a0 * cos_a2 * sin_a1 * sin_a3) - sin_a5 * (cos_a4 * (cos_a0 * cos_a1 * sin_a3 + cos_a0 * cos_a2 * cos_a3 * sin_a1) - cos_a0 * sin_a1 * sin_a2 * sin_a4)) + l2 * cos_a0 * cos_a1 + l3 * cos_a0 * sin_a1 * sin_a2;
+    jacobian[0][2] = l6 * (sin_a5 * (sin_a4 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - cos_a3 * cos_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2)) - cos_a5 * sin_a3 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2)) + l5 * (cos_a4 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a3 * sin_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2)) + l3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - l4 * sin_a3 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2);
+    jacobian[0][3] = -l6 * (cos_a5 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3) - cos_a4 * sin_a5 * (sin_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - cos_a0 * cos_a3 * sin_a1)) - l4 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3) - l5 * sin_a4 * (sin_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - cos_a0 * cos_a3 * sin_a1);
+    jacobian[0][4] = l5 * (sin_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) + cos_a4 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3)) - l6 * sin_a5 * (cos_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) - sin_a4 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3));
+    jacobian[0][5] = -l6 * (cos_a5 * (sin_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) + cos_a4 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3)) - sin_a5 * (sin_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - cos_a0 * cos_a3 * sin_a1));
+    jacobian[1][0] = l2 * cos_a0 * sin_a1 - l4 * (sin_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - cos_a0 * cos_a3 * sin_a1) - l1 * sin_a0 - l3 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) - l5 * (cos_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) - sin_a4 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3)) - l6 * (sin_a5 * (sin_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) + cos_a4 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3)) + cos_a5 * (sin_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - cos_a0 * cos_a3 * sin_a1));
+    jacobian[1][1] = l4 * (cos_a1 * cos_a3 * sin_a0 - cos_a2 * sin_a0 * sin_a1 * sin_a3) - l6 * (sin_a5 * (cos_a4 * (cos_a1 * sin_a0 * sin_a3 + cos_a2 * cos_a3 * sin_a0 * sin_a1) - sin_a0 * sin_a1 * sin_a2 * sin_a4) - cos_a5 * (cos_a1 * cos_a3 * sin_a0 - cos_a2 * sin_a0 * sin_a1 * sin_a3)) + l5 * (sin_a4 * (cos_a1 * sin_a0 * sin_a3 + cos_a2 * cos_a3 * sin_a0 * sin_a1) + cos_a4 * sin_a0 * sin_a1 * sin_a2) + l2 * cos_a1 * sin_a0 + l3 * sin_a0 * sin_a1 * sin_a2;
+    jacobian[1][2] = l4 * sin_a3 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) - l5 * (cos_a4 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) + cos_a3 * sin_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2)) - l3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - l6 * (sin_a5 * (sin_a4 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - cos_a3 * cos_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2)) - cos_a5 * sin_a3 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2));
+    jacobian[1][3] = l6 * (cos_a5 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3) - cos_a4 * sin_a5 * (sin_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) + cos_a3 * sin_a0 * sin_a1)) + l4 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3) + l5 * sin_a4 * (sin_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) + cos_a3 * sin_a0 * sin_a1);
+    jacobian[1][4] = l6 * sin_a5 * (cos_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) - sin_a4 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3)) - l5 * (sin_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) + cos_a4 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3));
+    jacobian[1][5] = l6 * (cos_a5 * (sin_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) + cos_a4 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3)) - sin_a5 * (sin_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) + cos_a3 * sin_a0 * sin_a1));
+    jacobian[2][0] = 0;
+    jacobian[2][1] = l3 * cos_a1 * sin_a2 - l2 * sin_a1 - l4 * (cos_a3 * sin_a1 + cos_a1 * cos_a2 * sin_a3) - l6 * (cos_a5 * (cos_a3 * sin_a1 + cos_a1 * cos_a2 * sin_a3) - sin_a5 * (cos_a4 * (sin_a1 * sin_a3 - cos_a1 * cos_a2 * cos_a3) + cos_a1 * sin_a2 * sin_a4)) - l5 * (sin_a4 * (sin_a1 * sin_a3 - cos_a1 * cos_a2 * cos_a3) - cos_a1 * cos_a4 * sin_a2);
+    jacobian[2][2] = l5 * (cos_a2 * cos_a4 * sin_a1 - cos_a3 * sin_a1 * sin_a2 * sin_a4) + l6 * (sin_a5 * (cos_a2 * sin_a1 * sin_a4 + cos_a3 * cos_a4 * sin_a1 * sin_a2) + cos_a5 * sin_a1 * sin_a2 * sin_a3) + l3 * cos_a2 * sin_a1 + l4 * sin_a1 * sin_a2 * sin_a3;
+    jacobian[2][3] = l5 * sin_a4 * (cos_a1 * cos_a3 - cos_a2 * sin_a1 * sin_a3) - l4 * (cos_a1 * sin_a3 + cos_a2 * cos_a3 * sin_a1) - l6 * (cos_a5 * (cos_a1 * sin_a3 + cos_a2 * cos_a3 * sin_a1) + cos_a4 * sin_a5 * (cos_a1 * cos_a3 - cos_a2 * sin_a1 * sin_a3));
+    jacobian[2][4] = l5 * (cos_a4 * (cos_a1 * sin_a3 + cos_a2 * cos_a3 * sin_a1) - sin_a1 * sin_a2 * sin_a4) + l6 * sin_a5 * (sin_a4 * (cos_a1 * sin_a3 + cos_a2 * cos_a3 * sin_a1) + cos_a4 * sin_a1 * sin_a2);
+    jacobian[2][5] = -l6 * (sin_a5 * (cos_a1 * cos_a3 - cos_a2 * sin_a1 * sin_a3) + cos_a5 * (cos_a4 * (cos_a1 * sin_a3 + cos_a2 * cos_a3 * sin_a1) - sin_a1 * sin_a2 * sin_a4));
+    jacobian[3][0] = -sin_a5 * (sin_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) + cos_a4 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3)) - cos_a5 * (sin_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) + cos_a3 * sin_a0 * sin_a1);
+    jacobian[3][1] = cos_a5 * (cos_a0 * cos_a1 * cos_a3 - cos_a0 * cos_a2 * sin_a1 * sin_a3) - sin_a5 * (cos_a4 * (cos_a0 * cos_a1 * sin_a3 + cos_a0 * cos_a2 * cos_a3 * sin_a1) - cos_a0 * sin_a1 * sin_a2 * sin_a4);
+    jacobian[3][2] = sin_a5 * (sin_a4 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - cos_a3 * cos_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2)) - cos_a5 * sin_a3 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2);
+    jacobian[3][3] = cos_a4 * sin_a5 * (sin_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - cos_a0 * cos_a3 * sin_a1) - cos_a5 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3);
+    jacobian[3][4] = -sin_a5 * (cos_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) - sin_a4 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3));
+    jacobian[3][5] = sin_a5 * (sin_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - cos_a0 * cos_a3 * sin_a1) - cos_a5 * (sin_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) + cos_a4 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3));
+    jacobian[4][0] = -sin_a5 * (sin_a4 * (cos_a2 * sin_a0 + cos_a0 * cos_a1 * sin_a2) + cos_a4 * (cos_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) + cos_a0 * sin_a1 * sin_a3)) - cos_a5 * (sin_a3 * (sin_a0 * sin_a2 - cos_a0 * cos_a1 * cos_a2) - cos_a0 * cos_a3 * sin_a1);
+    jacobian[4][1] = cos_a5 * (cos_a1 * cos_a3 * sin_a0 - cos_a2 * sin_a0 * sin_a1 * sin_a3) - sin_a5 * (cos_a4 * (cos_a1 * sin_a0 * sin_a3 + cos_a2 * cos_a3 * sin_a0 * sin_a1) - sin_a0 * sin_a1 * sin_a2 * sin_a4);
+    jacobian[4][2] = cos_a5 * sin_a3 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) - sin_a5 * (sin_a4 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - cos_a3 * cos_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2));
+    jacobian[4][3] = cos_a5 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3) - cos_a4 * sin_a5 * (sin_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) + cos_a3 * sin_a0 * sin_a1);
+    jacobian[4][4] = sin_a5 * (cos_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) - sin_a4 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3));
+    jacobian[4][5] = cos_a5 * (sin_a4 * (cos_a0 * cos_a2 - cos_a1 * sin_a0 * sin_a2) + cos_a4 * (cos_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) - sin_a0 * sin_a1 * sin_a3)) - sin_a5 * (sin_a3 * (cos_a0 * sin_a2 + cos_a1 * cos_a2 * sin_a0) + cos_a3 * sin_a0 * sin_a1);
+    jacobian[5][0] = 0;
+    jacobian[5][1] = sin_a5 * (cos_a4 * (sin_a1 * sin_a3 - cos_a1 * cos_a2 * cos_a3) + cos_a1 * sin_a2 * sin_a4) - cos_a5 * (cos_a3 * sin_a1 + cos_a1 * cos_a2 * sin_a3);
+    jacobian[5][2] = sin_a5 * (cos_a2 * sin_a1 * sin_a4 + cos_a3 * cos_a4 * sin_a1 * sin_a2) + cos_a5 * sin_a1 * sin_a2 * sin_a3;
+    jacobian[5][3] = -cos_a5 * (cos_a1 * sin_a3 + cos_a2 * cos_a3 * sin_a1) - cos_a4 * sin_a5 * (cos_a1 * cos_a3 - cos_a2 * sin_a1 * sin_a3);
+    jacobian[5][4] = sin_a5 * (sin_a4 * (cos_a1 * sin_a3 + cos_a2 * cos_a3 * sin_a1) + cos_a4 * sin_a1 * sin_a2);
+    jacobian[5][5] = -sin_a5 * (cos_a1 * cos_a3 - cos_a2 * sin_a1 * sin_a3) - cos_a5 * (cos_a4 * (cos_a1 * sin_a3 + cos_a2 * cos_a3 * sin_a1) - sin_a1 * sin_a2 * sin_a4);
 }
 
 // ERROR CODE
@@ -118,7 +138,7 @@ void *compute_row(void *args)
 
 void multiply(int dim, type_t mat_a[][MAX_LEN], type_t mat_b[][MAX_LEN], type_t mat_c[][MAX_LEN])
 {
-    g_dim = dim; 
+    g_dim = dim;
     g_mat_a = mat_a;
     g_mat_b = mat_b;
     g_mat_c = mat_c;
@@ -157,8 +177,6 @@ void multiply(int dim, type_t mat_a[][MAX_LEN], type_t mat_b[][MAX_LEN], type_t 
     }
     pthread_attr_destroy(&attr);
 }
-
-
 
 type_t *allocate_real_vector(int l, int u)
 { /* Allocates a real vector of range [l..u]. */

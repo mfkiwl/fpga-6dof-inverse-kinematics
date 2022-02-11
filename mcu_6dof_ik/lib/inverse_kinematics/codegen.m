@@ -6,12 +6,11 @@ syms j30 j31 j32 j33 j34 j35
 syms j40 j41 j42 j43 j44 j45 
 syms j50 j51 j52 j53 j54 j55 
 
-t = @(x)([-cos(x) sin(x) 0;0 0 1;sin(x) cos(x) 0]);
-r = @(l)([0;0;l]);
-td = @(x)([cos(x) -sin(x) 0;sin(x) cos(x) 0; 0 0 1]);
+t = @(x)([-cos(x) 0 -sin(x);-sin(x) 0 cos(x);0 1 0]);
+r = @(x)([0;0;x]);
 
 r = t(a0) * r(l1) + t(a0)*t(a1) * r(l2) + t(a0)*t(a1)*t(a2) * r(l3) + t(a0)*t(a1)*t(a2)*t(a3) * r(l4) + t(a0)*t(a1)*t(a2)*t(a3)*t(a4) * r(l5) + t(a0)*t(a1)*t(a2)*t(a3)*t(a4)*t(a5) * r(l6);
-p = (td(a0) * td(a1) * td(a2) * td(a3) * td(a4) * td(a5)) * [0;0;1];
+p = (t(a0) * t(a1) * t(a2) * t(a3) * t(a4) * t(a5)) * [0;0;1];
 f = [r;p];
 
 % #include <stdio.h>
