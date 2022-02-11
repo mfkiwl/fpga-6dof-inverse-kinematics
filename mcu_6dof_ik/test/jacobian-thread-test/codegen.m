@@ -28,7 +28,7 @@ f = [r;p];
 %     {
 %         for (j = 0; j < 6; j++)
 %         {
-%             printf("fprintf(\"void get_jacobian_%d%d(void){g_jacobian[%d][%d] %%s;}\\n\", j%d%d);\n", i, j, i, j, i, j);
+%             printf("fprintf(\"(void*) get_jacobian_%d%d(void* arg){((type_t(*)[6]) arg)[%d][%d] %%s;pthread_exit(NULL);}\\n\", j%d%d);\n", i, j, i, j, i, j);
 %         }
 %     }
 
