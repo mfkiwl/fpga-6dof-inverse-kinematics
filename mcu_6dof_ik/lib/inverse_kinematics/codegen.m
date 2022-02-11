@@ -13,25 +13,33 @@ r = t(a0) * r(l1) + t(a0)*t(a1) * r(l2) + t(a0)*t(a1)*t(a2) * r(l3) + t(a0)*t(a1
 p = (t(a0) * t(a1) * t(a2) * t(a3) * t(a4) * t(a5)) * [0;0;1];
 f = [r;p];
 
-% #include <stdio.h>
 % int main(void)
 % {
 %     int i, j;
-%     for (i=0; i<6; i++)
+%     for (i = 0; i < 6; i++)
 %     {
-%         for (j=0; j < 6; j++)
+%         for (j = 0; j < 6; j++)
 %         {
-%             printf("j%d%d = diff(f(%d,1), a%d);\n", i, j, i+1, j);
+%             printf("j%d%d = diff(f(%d,1), a%d);\n", i, j, i + 1, j);
 %         }
 %     }
 
-%     for (i=0; i<6; i++)
+%     for (i = 0; i < 6; i++)
 %     {
-%         for (j=0; j < 6; j++)
+%         for (j = 0; j < 6; j++)
 %         {
-%             printf("fprintf(\"jacobian[%d][%d] = %%s;\\n\", j%d%d);\n", i, j, i, j);
+%             printf("fprintf(\"void get_jacobian_%d%d(void){g_jacobian[%d][%d] %%s;}\\n\", j%d%d);\n", i, j, i, j, i, j);
 %         }
 %     }
+
+%//     for (i = 0; i < 6; i++)
+%//     {
+%//         for (j = 0; j < 6; j++)
+%//         {
+%//             printf("get_jacobian_func_arr[%d][%d] = (void(*)(void))get_jacobian_%d%d;\n", i, j, i, j);
+%//         }
+%//     }
+
 %     return 0;
 % }
 j00 = diff(f(1,1), a0);
